@@ -1,0 +1,130 @@
+/*-- make extra network thumbs appear to the side --*/
+
+#tab_txt2img > div,
+#tab_img2img > div {
+	display: grid;
+}
+
+#txt2img_toprow,
+#img2img_toprow {
+	grid-column-start: 1;
+	grid-column-end: 4;
+	grid-row-start: 1;
+	grid-row-end: 2;
+}
+
+#tab_img2img #img2img_toprow ~ .form {
+	display: contents;
+}
+
+#tab_txt2img #txt2img_toprow ~ .form,
+#tab_img2img #img2img_extra_networks {
+	grid-column-start: 3;
+	grid-column-end: 4;
+	grid-row-start: 3;
+	grid-row-end: 4;
+}
+
+#tab_txt2img #txt2img_toprow ~ .form + div,
+#tab_img2img #img2img_extra_networks + div {
+	grid-column-start: 1;
+	grid-column-end: 2;
+	grid-row-start: 3;
+	grid-row-end: 4;
+}
+
+.extra-network-thumbs, .extra-network-cards {
+	overflow: auto;
+}
+
+.extra-network-pane {
+	height: 60vh;
+	min-height: unset;
+}
+
+@media (min-width: 3146px) {
+	#txt2img_toprow,
+	#img2img_toprow,
+	#tab_txt2img #txt2img_toprow ~ .form + div,
+	#tab_img2img #img2img_extra_networks + div {
+		max-width: 1800px;
+	}
+}
+
+@media (max-width: 3145px) {
+	#tab_txt2img #txt2img_toprow ~ .form,
+	#tab_img2img #img2img_extra_networks {
+		max-width: 50vw;
+		min-width: 50vw;
+	}
+}
+
+@media (max-width: 970px) {
+	#tab_txt2img #txt2img_toprow ~ .form,
+	#tab_img2img #img2img_extra_networks {
+		grid-column-start: 1;
+		grid-column-end: 2;
+		grid-row-start: 2;
+		grid-row-end: 2;
+		max-width: unset;
+		min-width: unset;
+	}
+}
+
+/* -- */
+
+[important-hide="2"] > button:nth-of-type(2),
+[important-hide="3"] > button:nth-of-type(3),
+[important-hide="1"] > button:nth-of-type(1),
+[important-hide="4"] > button:nth-of-type(4),
+[important-hide="5"] > button:nth-of-type(5),
+[important-hide="6"] > button:nth-of-type(6),
+[important-hide="7"] > button:nth-of-type(7),
+[important-hide="8"] > button:nth-of-type(8),
+[important-hide="9"] > button:nth-of-type(9),
+[important-hide="10"] > button:nth-of-type(10),
+[important-hide="11"] > button:nth-of-type(11),
+[important-hide="12"] > button:nth-of-type(12),
+[important-hide="13"] > button:nth-of-type(13),
+[important-hide="14"] > button:nth-of-type(14) {
+	display: none !important;
+}
+
+#txt2img_generation_tab_resize,
+#img2img_generation_tab_resize {
+	cursor: col-resize;
+	user-select: none;
+	overflow: hidden;
+	padding-top: 10px;
+	padding-right: 7px;
+	padding-left: 7px;
+	margin-right: -7px;
+	margin-left: -7px;
+}
+
+#txt2img_generation_tab_resize:before,
+#img2img_generation_tab_resize:before {
+	content: "";
+	display: block;
+	z-index: -1;
+	height: 100%;
+	border-left: 1px dashed var(--border-color-primary);
+}
+
+#tab_txt2img > div[restore-seperate-extra-network],
+#tab_img2img > div[restore-seperate-extra-network] {
+	grid-template-columns: min-content min-content auto; /* 0.8fr auto 1fr; */
+}
+
+[restore-seperate-extra-network] [sd-enr-id="txt2img_generation_tab"],
+[restore-seperate-extra-network] [sd-enr-id="img2img_generation_tab"] {
+	grid-column-start: 1;
+	grid-column-end: 1;
+	width: 40vw;
+}
+
+[restore-seperate-extra-network] #txt2img_extra_tabs,
+[restore-seperate-extra-network] #img2img_extra_tabs {
+	grid-column-start: 3;
+	grid-column-end: 3;
+}
