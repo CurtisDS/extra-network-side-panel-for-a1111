@@ -7,6 +7,9 @@ var rsen_extra_networks_symbol = '🎴';
 // Keep track of toggle state
 var rsen_toggleState = false;
 
+var rsen_lastTxt2imgTabButton;
+var rsen_lastImg2imgTabButton;
+
 // This function is automatically called by automatic1111 when the UI is loaded
 onUiLoaded(function() {
   // This code should only be run once, so if init is true dont do anything. Init is set after we complete this the first time.
@@ -61,7 +64,8 @@ function rsen_toggleExtraNetworks() {
 			generation_tab: document.querySelector('[sd-enr-id="txt2img_generation_tab"]'),
 			generation_tab_resize: document.getElementById('txt2img_generation_tab_resize'),
 			generation_tab_resize_id: 'txt2img_generation_tab_resize',
-			tab_nav: document.querySelector('#txt2img_extra_tabs > .tab-nav')
+			tab_nav: document.querySelector('#txt2img_extra_tabs > .tab-nav'),
+      lastTabButton: rsen_lastTxt2imgTabButton
 		},
 		{ // Image2Image elements
 			all_tabs: document.getElementById('img2img_extra_tabs'),
@@ -69,7 +73,8 @@ function rsen_toggleExtraNetworks() {
 			generation_tab: document.querySelector('[sd-enr-id="img2img_generation_tab"]'),
 			generation_tab_resize: document.getElementById('img2img_generation_tab_resize'),
 			generation_tab_resize_id: 'img2img_generation_tab_resize',
-			tab_nav: document.querySelector('#img2img_extra_tabs > .tab-nav')
+			tab_nav: document.querySelector('#img2img_extra_tabs > .tab-nav'),
+      lastTabButton: rsen_lastImg2imgTabButton
 		}
 	];
 
@@ -79,13 +84,23 @@ function rsen_toggleExtraNetworks() {
 			// Find the tab buttons with the text "Checkpoints" and "Generation"
 			let checkpointsButton = Array.from(obj.tab_nav.querySelectorAll('button')).find(button => button.innerHTML.trim() === "Checkpoints");
 			let generationButton = Array.from(obj.tab_nav.querySelectorAll('button')).find(button => button.innerHTML.trim() === "Generation");
+      
+			let lastTabButton;
+      if (typeof obj.lastTabButton !== "undefined") {
+        lastTabButton = Array.from(obj.tab_nav.querySelectorAll('button')).find(button => button.innerHTML.trim() === obj.lastTabButton.innerHTML.trim());
+      }
 
 			if (checkpointsButton && generationButton) {
 				if (!rsen_toggleState) {
-					// Click the "Checkpoints" tab button
-					checkpointsButton.click();
+          if (typeof lastTabButton === "undefined") {
+					  // Click the "Checkpoints" tab button
+					  checkpointsButton.click();
+          } else {
+            // Switch to the last tab open
+            lastTabButton.click();
+          }
 
-          obj.all_tabs.parentNode.setAttribute("restore-seperate-extra-network","");
+          obj.all_tabs.parentNode.setAttribute("restore-separate-extra-network","");
 
 					// Move the generation_tab node to be before the all_tabs node
 					obj.all_tabs.parentNode.insertBefore(obj.generation_tab, obj.all_tabs);
@@ -130,7 +145,7 @@ function rsen_toggleExtraNetworks() {
 					// Show the "Generation" button
 					obj.tab_nav.removeAttribute("important-hide");
 
-          obj.all_tabs.parentNode.removeAttribute("restore-seperate-extra-network","");
+          obj.all_tabs.parentNode.removeAttribute("restore-separate-extra-network","");
 
 					// Move the generation_tab node back to its parent
 					obj.generation_tab_parent.appendChild(obj.generation_tab);
@@ -151,3 +166,15 @@ function rsen_toggleExtraNetworks() {
 		rsen_toggleState = !rsen_toggleState;
 	}
 }
+
+onUiUpdate(function(args) {
+  const lastTxt2imgTabButton = document.querySelector("#txt2img_extra_tabs > .tab-nav > .selected");
+  const lastImg2imgTabButton = document.querySelector("#img2img_extra_tabs > .tab-nav > .selected");
+
+  if(lastTxt2imgTabButton.innerHTML.trim() !== "Generation") {
+    rsen_lastTxt2imgTabButton = lastTxt2imgTabButton;
+  }
+  if(lastImg2imgTabButton.innerHTML.trim() !== "Generation") {
+    rsen_lastImg2imgTabButton = lastImg2imgTabButton;
+  }
+});
