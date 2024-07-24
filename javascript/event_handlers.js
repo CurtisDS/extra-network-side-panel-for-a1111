@@ -10,6 +10,13 @@ var rsen_toggleState = false;
 var rsen_lastTxt2imgTabButton;
 var rsen_lastImg2imgTabButton;
 
+var rsen_lastGenerationTabGridTemplateTxt2img = {
+  saved: "1fr 16px 1fr"
+}
+var rsen_lastGenerationTabGridTemplateImg2img = {
+  saved: "1fr 16px 1fr"
+};
+
 // This function is automatically called by automatic1111 when the UI is loaded
 onUiLoaded(function() {
   // This code should only be run once, so if init is true dont do anything. Init is set after we complete this the first time.
@@ -65,7 +72,8 @@ function rsen_toggleExtraNetworks() {
 			generation_tab_resize: document.getElementById('txt2img_generation_tab_resize'),
 			generation_tab_resize_id: 'txt2img_generation_tab_resize',
 			tab_nav: document.querySelector('#txt2img_extra_tabs > .tab-nav'),
-      lastTabButton: rsen_lastTxt2imgTabButton
+      lastTabButton: rsen_lastTxt2imgTabButton,
+      lastGridTemplate: rsen_lastGenerationTabGridTemplateTxt2img
 		},
 		{ // Image2Image elements
 			all_tabs: document.getElementById('img2img_extra_tabs'),
@@ -74,7 +82,8 @@ function rsen_toggleExtraNetworks() {
 			generation_tab_resize: document.getElementById('img2img_generation_tab_resize'),
 			generation_tab_resize_id: 'img2img_generation_tab_resize',
 			tab_nav: document.querySelector('#img2img_extra_tabs > .tab-nav'),
-      lastTabButton: rsen_lastImg2imgTabButton
+      lastTabButton: rsen_lastImg2imgTabButton,
+      lastGridTemplate: rsen_lastGenerationTabGridTemplateImg2img
 		}
 	];
 
@@ -141,6 +150,13 @@ function rsen_toggleExtraNetworks() {
           obj.generation_tab.style.overflowX = 'auto';
           obj.generation_tab.style.width = '';
           obj.generation_tab.style.paddingTop = '10px';
+
+          // Reset the grid columns for the generation tab incase user made the columns too large
+          if(obj.generation_tab.firstElementChild) {
+            let tempVal = obj.generation_tab.firstElementChild.style.gridTemplateColumns;
+            obj.generation_tab.firstElementChild.style.gridTemplateColumns = obj.lastGridTemplate.saved;
+            obj.lastGridTemplate.saved = tempVal;
+          }
 				} else {
 					// Show the "Generation" button
 					obj.tab_nav.removeAttribute("important-hide");
@@ -156,6 +172,13 @@ function rsen_toggleExtraNetworks() {
           obj.generation_tab.style.paddingTop = '';
 
           obj.generation_tab_resize.remove();
+
+          // Restore the grid columns for the generation tab incase user made the columns
+          if(obj.generation_tab.firstElementChild) {
+            let tempVal = obj.generation_tab.firstElementChild.style.gridTemplateColumns;
+            obj.generation_tab.firstElementChild.style.gridTemplateColumns = obj.lastGridTemplate.saved;
+            obj.lastGridTemplate.saved = tempVal;
+          }
 
 					// Click the "Generation" tab button
 					generationButton.click();
