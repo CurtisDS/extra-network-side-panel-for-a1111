@@ -62,6 +62,11 @@ onUiLoaded(function() {
   }
 });
 
+function getText_ExtraNetworksSidePanel(text) {
+    let tl = getTranslation(text);
+    return tl !== undefined ? tl.trim() : text.trim();
+}
+
 function rsen_toggleExtraNetworks() {
 	// Get all the elements you are interested in and put them into an object to make the later code a bit cleaner
 	let settingsObjects = [
@@ -91,19 +96,20 @@ function rsen_toggleExtraNetworks() {
 		// Loop through each object in the array we created earlier
 		settingsObjects.forEach(obj => {
 			// Find the tab buttons with the text "Checkpoints" and "Generation"
-			let checkpointsButton = Array.from(obj.tab_nav.querySelectorAll('button')).find(button => button.innerHTML.trim() === "Checkpoints");
-			let generationButton = Array.from(obj.tab_nav.querySelectorAll('button')).find(button => button.innerHTML.trim() === "Generation");
+            let tabButtons = Array.from(obj.tab_nav.querySelectorAll('button'))
+			let defaultTabButton = tabButtons.find(button => button.innerHTML.trim() === getText_ExtraNetworksSidePanel(opts.extra_networks_side_panel_default_tab));
+			let generationButton = tabButtons.find(button => button.innerHTML.trim() === getText_ExtraNetworksSidePanel("Generation"));
       
 			let lastTabButton;
       if (typeof obj.lastTabButton !== "undefined") {
         lastTabButton = Array.from(obj.tab_nav.querySelectorAll('button')).find(button => button.innerHTML.trim() === obj.lastTabButton.innerHTML.trim());
       }
 
-			if (checkpointsButton && generationButton) {
+			if (defaultTabButton && generationButton) {
 				if (!rsen_toggleState) {
           if (typeof lastTabButton === "undefined") {
 					  // Click the "Checkpoints" tab button
-					  checkpointsButton.click();
+					  defaultTabButton.click();
           } else {
             // Switch to the last tab open
             lastTabButton.click();
@@ -193,11 +199,11 @@ function rsen_toggleExtraNetworks() {
 onUiUpdate(function(args) {
   const lastTxt2imgTabButton = document.querySelector("#txt2img_extra_tabs > .tab-nav > .selected");
   const lastImg2imgTabButton = document.querySelector("#img2img_extra_tabs > .tab-nav > .selected");
-
-  if(lastTxt2imgTabButton != null && typeof lastTxt2imgTabButton !== "undefined" && lastTxt2imgTabButton.innerHTML.trim() !== "Generation") {
+  let generationText = getText_ExtraNetworksSidePanel("Generation")
+  if(lastTxt2imgTabButton != null && typeof lastTxt2imgTabButton !== "undefined" && lastTxt2imgTabButton.innerHTML.trim() !== generationText) {
     rsen_lastTxt2imgTabButton = lastTxt2imgTabButton;
   }
-  if(lastImg2imgTabButton != null && typeof lastImg2imgTabButton !== "undefined" && lastImg2imgTabButton.innerHTML.trim() !== "Generation") {
+  if(lastImg2imgTabButton != null && typeof lastImg2imgTabButton !== "undefined" && lastImg2imgTabButton.innerHTML.trim() !== generationText) {
     rsen_lastImg2imgTabButton = lastImg2imgTabButton;
   }
 });
