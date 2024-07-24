@@ -194,10 +194,10 @@ onUiUpdate(function(args) {
   const lastTxt2imgTabButton = document.querySelector("#txt2img_extra_tabs > .tab-nav > .selected");
   const lastImg2imgTabButton = document.querySelector("#img2img_extra_tabs > .tab-nav > .selected");
 
-  if(lastTxt2imgTabButton.innerHTML.trim() !== "Generation") {
+  if(lastTxt2imgTabButton != null && typeof lastTxt2imgTabButton !== "undefined" && lastTxt2imgTabButton.innerHTML.trim() !== "Generation") {
     rsen_lastTxt2imgTabButton = lastTxt2imgTabButton;
   }
-  if(lastImg2imgTabButton.innerHTML.trim() !== "Generation") {
+  if(lastImg2imgTabButton != null && typeof lastImg2imgTabButton !== "undefined" && lastImg2imgTabButton.innerHTML.trim() !== "Generation") {
     rsen_lastImg2imgTabButton = lastImg2imgTabButton;
   }
 });
