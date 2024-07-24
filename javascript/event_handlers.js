@@ -95,8 +95,8 @@ function rsen_toggleExtraNetworks() {
 	if (typeof settingsObjects[0].generation_tab != "undefined" && typeof settingsObjects[1].generation_tab != "undefined") {
 		// Loop through each object in the array we created earlier
 		settingsObjects.forEach(obj => {
-			// Find the tab buttons with the text "Checkpoints" and "Generation"
-            let tabButtons = Array.from(obj.tab_nav.querySelectorAll('button'))
+			// Find the tab buttons with the text for the default tab and "Generation" tab
+      let tabButtons = Array.from(obj.tab_nav.querySelectorAll('button'))
 			let defaultTabButton = tabButtons.find(button => button.innerHTML.trim() === getText_ExtraNetworksSidePanel(opts.extra_networks_side_panel_default_tab));
 			let generationButton = tabButtons.find(button => button.innerHTML.trim() === getText_ExtraNetworksSidePanel("Generation"));
       
@@ -105,10 +105,10 @@ function rsen_toggleExtraNetworks() {
         lastTabButton = Array.from(obj.tab_nav.querySelectorAll('button')).find(button => button.innerHTML.trim() === obj.lastTabButton.innerHTML.trim());
       }
 
-			if (defaultTabButton && generationButton) {
+			if (generationButton) {
 				if (!rsen_toggleState) {
-          if (typeof lastTabButton === "undefined") {
-					  // Click the "Checkpoints" tab button
+          if (defaultTabButton && typeof lastTabButton === "undefined") {
+					  // Click the default tab button
 					  defaultTabButton.click();
           } else {
             // Switch to the last tab open
@@ -199,11 +199,12 @@ function rsen_toggleExtraNetworks() {
 onUiUpdate(function(args) {
   const lastTxt2imgTabButton = document.querySelector("#txt2img_extra_tabs > .tab-nav > .selected");
   const lastImg2imgTabButton = document.querySelector("#img2img_extra_tabs > .tab-nav > .selected");
-  let generationText = getText_ExtraNetworksSidePanel("Generation")
-  if(lastTxt2imgTabButton != null && typeof lastTxt2imgTabButton !== "undefined" && lastTxt2imgTabButton.innerHTML.trim() !== generationText) {
+  // onUiUpdate runs between localization so you have to check for both english and localized versions of the text
+  let generationText = ["Generation", getText_ExtraNetworksSidePanel("Generation")];
+  if(lastTxt2imgTabButton != null && typeof lastTxt2imgTabButton !== "undefined" && !generationText.includes(lastTxt2imgTabButton.innerHTML.trim())) {
     rsen_lastTxt2imgTabButton = lastTxt2imgTabButton;
   }
-  if(lastImg2imgTabButton != null && typeof lastImg2imgTabButton !== "undefined" && lastImg2imgTabButton.innerHTML.trim() !== generationText) {
+  if(lastImg2imgTabButton != null && typeof lastImg2imgTabButton !== "undefined" && !generationText.includes(lastImg2imgTabButton.innerHTML.trim())) {
     rsen_lastImg2imgTabButton = lastImg2imgTabButton;
   }
 });
