@@ -91,7 +91,7 @@ function rsen_toggleExtraNetworks() {
 		// Loop through each object in the array we created earlier
 		settingsObjects.forEach(obj => {
 			// Find the tab buttons with the text "Checkpoints" and "Generation"
-			let checkpointsButton = Array.from(obj.tab_nav.querySelectorAll('button')).find(button => button.innerHTML.trim() === "Checkpoints");
+			let checkpointsButton = Array.from(obj.tab_nav.querySelectorAll('button')).find(button => button.innerHTML.trim() === opts.extra_networks_side_panel_default_tab);
 			let generationButton = Array.from(obj.tab_nav.querySelectorAll('button')).find(button => button.innerHTML.trim() === "Generation");
       
 			let lastTabButton;
