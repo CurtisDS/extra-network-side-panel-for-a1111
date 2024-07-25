@@ -155,7 +155,6 @@ function rsen_toggleExtraNetworks() {
           // Allow the generation tab to be resized horizontally
           obj.generation_tab.style.overflowX = 'auto';
           obj.generation_tab.style.width = '';
-          obj.generation_tab.style.paddingTop = '10px';
 
           // Reset the grid columns for the generation tab incase user made the columns too large
           if(obj.generation_tab.firstElementChild) {
@@ -175,7 +174,6 @@ function rsen_toggleExtraNetworks() {
           // Allow the generation tab to be resized horizontally
           obj.generation_tab.style.overflowX = '';
           obj.generation_tab.style.width = '';
-          obj.generation_tab.style.paddingTop = '';
 
           obj.generation_tab_resize.remove();
 
@@ -208,3 +206,15 @@ onUiUpdate(function(args) {
     rsen_lastImg2imgTabButton = lastImg2imgTabButton;
   }
 });
+
+
+// for compact ui layout we need to hijack the method that moves the prompt box to the extra network tabs
+
+// save the original method
+const extraNetworksMovePromptToTabOriginal = extraNetworksMovePromptToTab;
+
+// override the original to not operate when the side panel is open
+extraNetworksMovePromptToTab = (a,b,c,d) => { 
+  if(rsen_toggleState) return;
+  return extraNetworksMovePromptToTabOriginal(a,b,c,d);
+};

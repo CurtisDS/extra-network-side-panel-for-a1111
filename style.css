@@ -116,21 +116,27 @@
 	grid-template-columns: min-content min-content auto; /* 0.8fr auto 1fr; */
 }
 
-[restore-separate-extra-network] [sd-enr-id="txt2img_generation_tab"],
-[restore-separate-extra-network] [sd-enr-id="img2img_generation_tab"] {
-	grid-column-start: 1;
-	grid-column-end: 1;
-	width: 40vw;
-}
-
 #txt2img_extra_tabs,
 #img2img_extra_tabs {
 	grid-column-start: 1;
 	grid-column-end: 4;
 }
 
+[restore-separate-extra-network] [sd-enr-id="txt2img_generation_tab"],
+[restore-separate-extra-network] [sd-enr-id="img2img_generation_tab"] {
+	grid-column-start: 1;
+	grid-column-end: 1;
+	width: 40vw;
+	padding-top: 20px;
+}
+
 [restore-separate-extra-network] #txt2img_extra_tabs,
 [restore-separate-extra-network] #img2img_extra_tabs {
 	grid-column-start: 3;
 	grid-column-end: 4;
+}
+
+[restore-separate-extra-network] .extra-page-prompts.extra-page-prompts-active{
+    margin-bottom: 0em;
+	display: none;
 }
