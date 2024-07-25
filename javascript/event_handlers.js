@@ -214,7 +214,7 @@ onUiUpdate(function(args) {
 const extraNetworksMovePromptToTabOriginal = extraNetworksMovePromptToTab;
 
 // override the original to not operate when the side panel is open
-extraNetworksMovePromptToTab = (a,b,c,d) => { 
+extraNetworksMovePromptToTab = (...args) => { 
   if(rsen_toggleState) return;
-  return extraNetworksMovePromptToTabOriginal(a,b,c,d);
+  return extraNetworksMovePromptToTabOriginal(...args);
 };
